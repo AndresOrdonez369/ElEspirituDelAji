@@ -334,3 +334,88 @@ audio {
    /* overflow: hidden; */
    /* opacity: 0; */
 }
+
+
+
+/* --- MEJORAS ESPECÍFICAS PARA ESCRITORIO GRANDE --- */
+@media (min-width: 1024px) { /* Ajusta este valor si prefieres (e.g., 1200px) */
+
+    html {
+        font-size: 17px; /* Aumentamos ligeramente la base para escalar REMs */
+    }
+
+    .content {
+        max-width: 950px;   /* <<< Ancho máximo fijo para mejor lectura >>> */
+        padding: 50px 70px; /* <<< Padding más generoso >>> */
+        border-radius: 15px; /* Bordes un poco más suaves */
+        background-color: rgba(0, 0, 0, 0.7); /* <<< Fondo un poco más opaco para contraste seguro >>> */
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45); /* Sombra ligeramente más definida */
+
+        /* Opcional: Sutil efecto al pasar el ratón sobre el cuadro de contenido */
+        transition: opacity 1s ease-out 0.5s,
+                    transform 1s ease-out 0.5s,
+                    box-shadow 0.4s ease,
+                    background-color 0.4s ease; /* Añadir transición para hover */
+    }
+
+    /* Opcional: Estilo Hover para el contenido */
+    /* Descomentar si quieres este efecto
+    .story-section:not(#pagina-1) .content:hover {
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55);
+        transform: translateY(0) scale(1.01); // Mantenemos Y(0) de is-visible y escalamos un poco
+        background-color: rgba(0, 0, 0, 0.75);
+    }
+    */
+
+    /* Tipografía para escritorio */
+    .content h1 {
+        font-size: 3.5rem; /* Título principal un poco más grande */
+        margin-bottom: 1.5rem;
+    }
+
+    .content h2 {
+        font-size: 3rem; /* Títulos secundarios un poco más grandes */
+        margin-bottom: 1.3rem;
+    }
+
+    .content p {
+        font-size: 1.4rem; /* Párrafos más grandes */
+        line-height: 1.8;  /* Mayor interlineado */
+        margin-bottom: 1.2rem; /* Más espacio entre párrafos */
+    }
+
+     /* Ajustes texto evocador en desktop */
+    .evocative-text h2 {
+        font-size: 2.0rem; /* Ajustado */
+        margin-bottom: 1rem;
+    }
+    .evocative-text p {
+        font-size: 1.2rem; /* Ajustado */
+    }
+
+
+    /* Botón Play/Pause ligeramente más grande y separado */
+    #audio-toggle-button {
+        width: 55px;
+        height: 55px;
+        line-height: 55px;
+        font-size: 1.7rem;
+        top: 30px;
+        right: 30px;
+    }
+
+    /* Opcional: Efecto Parallax para fondos (con precaución) */
+    /* Añade sensación de profundidad en scroll. Puede afectar rendimiento. */
+    /* Descomentar para probar:
+    .story-section::before {
+        background-attachment: fixed;
+        // Nota: background-attachment: fixed puede tener comportamientos
+        // inesperados en algunas combinaciones de navegador/SO o con
+        // transformaciones complejas. Probar bien.
+        // También puede afectar la optimización si el navegador
+        // tiene que repintar áreas grandes constantemente.
+    }
+    */
+}
+
+/* --- Fin de Mejoras para Escritorio --- */
