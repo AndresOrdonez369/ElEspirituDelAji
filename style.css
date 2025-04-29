@@ -11,53 +11,48 @@ html {
 }
 
 body {
-    /* Aplicamos Lato como fuente base para toda la página */
-    font-family: 'Lato', 'Arial', sans-serif; /* Lato como principal, Arial como fallback */
+    font-family: 'Lato', 'Arial', sans-serif;
     color: #fff;
-    overflow-x: hidden;
-    background-color: #111; /* Fondo oscuro base si algo falla */
-    line-height: 1.6; /* Establecemos un line-height base */
+    overflow-x: hidden; /* Evita scroll horizontal general */
+    background-color: #111;
+    line-height: 1.6;
 }
 
 /* --- ESTILOS PARA LA PÁGINA DE HISTORIA (index.html) --- */
 
 /* --- Estilo de las Secciones (Páginas) --- */
 .story-section {
-    height: 100vh;
+    /* *** CLAVE PARA ALTURA (Padre) *** */
+    height: 100vh; /* Ocupa toda la altura de la ventana */
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: flex; /* Activa Flexbox */
+    justify-content: center; /* Centrado horizontal */
+    align-items: center;   /* Centrado vertical del hijo (.content) */
     text-align: center;
-    position: relative; /* Necesario para ::before y .content */
-    overflow: hidden;
-    background-color: #000; /* Color mientras carga/transiciona la imagen */
+    position: relative;
+    overflow: hidden; /* Oculta overflow del pseudo-elemento si es necesario */
+    background-color: #000; /* Fondo mientras carga imagen */
+    /* Opcional: Añadir padding al padre si max-height solo no funciona
+       pero requiere box-sizing: border-box en .story-section */
+    /* padding: 5vh 0; */
+    /* box-sizing: border-box; */
 }
 
 /* --- Pseudo-elemento para la Imagen de Fondo con Fade --- */
 .story-section::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0; /* Detrás del contenido, pero visible */
-
-    /* Configuración de fondo */
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 0;
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-
-    /* Estado inicial: transparente */
-    opacity: 0;
-    /* Transición SÓLO para la opacidad */
-    transition: opacity 1.5s ease-in-out;
-    /* background-color: rgba(0, 0, 0, 0.3); */ /* Opcional: Tinte oscuro sobre la imagen */
+    opacity: 0; /* Inicia transparente */
+    transition: opacity 1.5s ease-in-out; /* Transición para fade-in */
+    /* background-attachment: fixed; */ /* Parallax opcional - USAR CON CUIDADO */
 }
 
-/* --- Imágenes de Fondo Específicas por Sección (aplicadas al ::before) --- */
-/* --- Asegúrate de tener estas 19 imágenes en tu carpeta 'images' --- */
+/* --- Imágenes de Fondo Específicas (19 secciones) --- */
 #pagina-1::before { background-image: url('images/fondo1.jpg'); }
 #pagina-2::before { background-image: url('images/fondo2.jpg'); }
 #pagina-3::before { background-image: url('images/fondo3.jpg'); }
@@ -78,72 +73,48 @@ body {
 #pagina-18::before { background-image: url('images/fondo18.jpg'); }
 #pagina-19::before { background-image: url('images/fondo19.jpg'); }
 
-
-/* --- Contenedor del Texto --- */
+/* --- Contenedor del Texto (Estilos Base - Móvil/Tablet) --- */
 .content {
-    position: relative; /* Para asegurar que está sobre ::before */
-    z-index: 1;        /* Debe tener un z-index mayor que ::before */
-    background-color: rgba(0, 0, 0, 0.65); /* Un poco más opaco para mejor contraste */
-    padding: 35px 50px; /* Un poco más de padding */
-    border-radius: 12px; /* Bordes un poco más redondeados */
-    max-width: 85%;     /* Ligeramente más ancho */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); /* Sombra más pronunciada */
-
-    /* Estado inicial: oculto (excepto animación especial de la primera pág) */
-    opacity: 0;
+    position: relative;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.65);
+    padding: 30px 40px;
+    border-radius: 12px;
+    max-width: 90%; /* Más ancho por defecto para pantallas pequeñas */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    opacity: 0; /* Inicia oculto para transición */
     transform: translateY(30px);
-    /* Transición con retraso para esperar al fondo */
     transition: opacity 1s ease-out 0.5s, transform 1s ease-out 0.5s;
+    /* *** IMPORTANTE: NO definir max-height ni overflow-y aquí por defecto *** */
+    /* A menos que también lo quieras en móvil/tablet */
 }
 
-/* --- Estilos de Texto REFINADOS --- */
+/* --- Estilos de Texto Base (Móvil/Tablet) --- */
 .content h1,
 .content h2 {
-    font-family: 'Raleway', 'Arial', sans-serif; /* Fuente Raleway para títulos */
-    font-weight: 700; /* Aseguramos el peso Bold */
-    color: #ffffff; /* Blanco puro para títulos */
-    margin-bottom: 1.2rem; /* Un poco más de espacio debajo de los títulos */
-    line-height: 1.3; /* Ajuste de interlineado para títulos */
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Sombra sutil para destacar */
+    font-family: 'Raleway', 'Arial', sans-serif;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 1.2rem;
+    line-height: 1.3;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
-
-.content h1 {
-    font-size: 3.2rem; /* Tamaño ligeramente ajustado */
-}
-
-.content h2 {
-    font-size: 2.8rem; /* Tamaño ligeramente ajustado */
-}
-
+.content h1 { font-size: 2.2rem; } /* Tamaño base ajustado */
+.content h2 { font-size: 2.0rem; } /* Tamaño base ajustado */
 .content p {
-    font-family: 'Lato', 'Arial', sans-serif; /* Aseguramos Lato para párrafos */
-    font-size: 1.3rem; /* Párrafo ligeramente más grande */
-    line-height: 1.7;  /* Interlineado un poco mayor para comodidad */
-    color: #f0f0f0;   /* Un blanco ligeramente más suave que los títulos */
-    margin-bottom: 1rem; /* Espacio estándar entre párrafos */
+    font-family: 'Lato', 'Arial', sans-serif;
+    font-size: 1.1rem; /* Tamaño base ajustado */
+    line-height: 1.7;
+    color: #f0f0f0;
+    margin-bottom: 1rem;
 }
+.content p:last-of-type {
+    margin-bottom: 0; /* Quitar margen extra al final por defecto */
+}
+.evocative-text h2 { font-size: 1.6rem; }
+.evocative-text p { font-size: 1.0rem; }
 
-/* Asegurarse que el último párrafo no tenga tanto margen inferior si se prefiere */
-.content p:last-child {
-    margin-bottom: 0;
-}
-
-/* Estilo opcional para texto evocador en secciones sin narrativa principal */
-.evocative-text h2,
-.evocative-text p {
-    opacity: 0.9;
-    /* font-style: italic; */ /* Descomentar si quieres cursiva */
-}
-.evocative-text h2 {
-    font-size: 2.2rem; /* Ligeramente más pequeño */
-    margin-bottom: 0.8rem;
-}
-.evocative-text p {
-    font-size: 1.1rem; /* Ligeramente más pequeño */
-}
-
-
-/* --- Animación Keyframes para la Primera Sección (Texto) --- */
+/* --- Animación Keyframes para la Primera Sección --- */
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(40px); }
     to { opacity: 1; transform: translateY(0); }
@@ -151,129 +122,148 @@ body {
 
 /* --- Manejo Especial Primera Sección --- */
 #pagina-1 .content {
-    opacity: 1;
-    transform: translateY(0);
-    transition: none; /* Anulamos la transición general de .content */
+    opacity: 1; transform: translateY(0); transition: none;
 }
-
 #pagina-1 .animated-text {
-    opacity: 0; /* La animación empieza desde opacidad 0 */
-    animation: fadeInUp 1.5s ease-out forwards;
-    animation-delay: 0.5s; /* Retraso inicial */
+    opacity: 0; animation: fadeInUp 1.5s ease-out forwards; animation-delay: 0.5s;
 }
-#pagina-1 .animated-text.delay-animation {
-    animation-delay: 1s; /* Retraso mayor para el segundo texto */
-}
+#pagina-1 .animated-text.delay-animation { animation-delay: 1s; }
 
 /* --- Estilo cuando la sección está visible (añadido por JS) --- */
-/* Hacer aparecer el FONDO (fade in) */
 .story-section.is-visible::before {
-    opacity: 1;
+    opacity: 1; /* Muestra el fondo */
 }
-
-/* Hacer aparecer el CONTENIDO (excepto el de la primera página que ya es visible) */
 .story-section:not(#pagina-1).is-visible .content {
-    opacity: 1;
-    transform: translateY(0);
+    opacity: 1; transform: translateY(0); /* Muestra el contenido */
 }
 
-
-/* --- Responsividad para la Página de Historia --- */
-@media (max-width: 768px) {
-    html { font-size: 15px; } /* Base ligeramente mayor para tablet */
-    .content { padding: 25px 35px; max-width: 90%; }
-    .content h1 { font-size: 2.5rem; } /* Ajuste responsivo */
-    .content h2 { font-size: 2.2rem; } /* Ajuste responsivo */
-    .content p { font-size: 1.2rem; }  /* Ajuste responsivo */
-     /* Ajustes texto evocador en tablet */
-    .evocative-text h2 { font-size: 1.8rem; }
-    .evocative-text p { font-size: 1.0rem; }
+/* --- Responsividad Tablet --- */
+@media (min-width: 481px) and (max-width: 1023px) { /* Rango para tablet */
+    html { font-size: 15px; }
+    .content { padding: 30px 45px; max-width: 88%; }
+    .content h1 { font-size: 2.8rem; }
+    .content h2 { font-size: 2.4rem; }
+    .content p { font-size: 1.2rem; }
+    .evocative-text h2 { font-size: 2.0rem; }
+    .evocative-text p { font-size: 1.1rem; }
 }
 
-@media (max-width: 480px) {
-    html { font-size: 14px; } /* Base ligeramente mayor para móvil */
-     .content { padding: 20px 25px; }
-     .content h1 { font-size: 2rem; }  /* Ajuste responsivo */
-     .content h2 { font-size: 1.8rem; }  /* Ajuste responsivo */
-     .content p { font-size: 1.1rem; }   /* Ajuste responsivo */
-     /* Ajustes texto evocador en móvil */
-    .evocative-text h2 { font-size: 1.5rem; }
-    .evocative-text p { font-size: 0.9rem; }
-}
+/* --- MEJORAS ESPECÍFICAS PARA ESCRITORIO GRANDE --- */
+@media (min-width: 1024px) { /* Aplica a partir de este ancho */
+
+    html {
+        font-size: 17px; /* Tamaño base ligeramente mayor */
+    }
+
+    /* --- Ajustes para .content (Página de Historia) --- */
+    .content {
+        /* Ancho máximo: limitado por píxeles o porcentaje del viewport */
+        max-width: min(950px, 90vw);
+        /* Altura máxima relativa al viewport */
+        max-height: 90vh;
+        /* Scroll interno si el contenido es más alto */
+        overflow-y: auto;
+        /* Estilos Visuales y Espaciado Interno */
+        padding: 50px 70px;
+        border-radius: 15px;
+        background-color: rgba(0, 0, 0, 0.7);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
+        transition: opacity 1s ease-out 0.5s, transform 1s ease-out 0.5s,
+                    box-shadow 0.4s ease, background-color 0.4s ease;
+        font-family: 'Lato', 'Arial', sans-serif;
+    }
+    /* Tipografía para .content */
+    .content h1 { font-size: 3.5rem; margin-bottom: 1.5rem; /* ... otros estilos ... */ }
+    .content h2 { font-size: 3rem; margin-bottom: 1.3rem; /* ... otros estilos ... */ }
+    .content p { font-size: 1.4rem; line-height: 1.8; margin-bottom: 1.2rem; /* ... otros estilos ... */ }
+    .content p:last-of-type { margin-bottom: 1.5rem; }
+    .evocative-text h2 { font-size: 2.0rem; margin-bottom: 1rem; }
+    .evocative-text p { font-size: 1.2rem; }
+    .evocative-text p:last-of-type { margin-bottom: 1.5rem; }
+
+
+    /* --- *** AJUSTES PARA .landing-content (Página de Inicio) *** --- */
+    .landing-content {
+        /* Ancho máximo: podemos usar un valor similar o ligeramente menor */
+        max-width: min(850px, 90vw); /* Ejemplo: 850px o 90% ancho ventana */
+        /* Altura máxima relativa al viewport */
+        max-height: 90vh; /* Misma lógica que .content */
+        /* Scroll interno si el contenido (H1, P, Botón) excede max-height */
+        overflow-y: auto; /* INDISPENSABLE */
+
+        /* Otros estilos para escritorio */
+        padding: 50px 70px; /* Padding generoso */
+        border-radius: 15px;
+         /* (background-color, box-shadow ya están definidos en la base, se pueden mantener o ajustar) */
+         /* background-color: rgba(0, 0, 0, 0.7); */
+         /* box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45); */
+    }
+
+    /* Tipografía para .landing-content en escritorio */
+    .landing-content h1 {
+        font-size: 3.8rem; /* Título grande y destacado */
+        line-height: 1.2;
+        margin-bottom: 1.8rem;
+    }
+    .landing-content p {
+        font-size: 1.4rem; /* Párrafo legible */
+        line-height: 1.8;
+        margin-bottom: 2.8rem; /* Más espacio antes del botón */
+        /* Asegurar espacio final si aparece scroll */
+        /* padding-bottom: 1rem; */ /* Alternativa a margen en el último elemento */
+    }
+     /* Asegurar espacio después del último párrafo y antes del botón */
+     .landing-content p:last-of-type {
+         margin-bottom: 2.5rem; /* Asegura espacio antes del botón */
+     }
+
+
+    /* --- Estilos Botón Audio (Sin cambios aquí, solo tamaño) --- */
+     #audio-toggle-button {
+        width: 55px; height: 55px; line-height: 55px;
+        font-size: 1.7rem; top: 30px; right: 30px;
+    }
+
+    /* --- Estilización Opcional de Scrollbar --- */
+    /* Para Webkit */
+    /* .content::-webkit-scrollbar, .landing-content::-webkit-scrollbar { ... } */
+    /* Para Firefox */
+    /* .content, .landing-content { scrollbar-width: thin; ... } */
+
+
+} /* --- Fin de @media (min-width: 1024px) --- */
 
 
 /* --- ESTILOS PARA LA PÁGINA DE INICIO (inicio.html) --- */
-
+/* (Se mantienen igual que antes, asegurando consistencia de fuentes) */
 body.landing-page {
-    font-family: 'Lato', 'Arial', sans-serif; /* Fuente base Lato */
-    background-image: url('images/fondo_inicio.jpg'); /* Imagen de fondo específica */
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    height: 100vh;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: #fff;
-    overflow: hidden; /* Evita barras de scroll en la landing */
+    font-family: 'Lato', 'Arial', sans-serif;
+    background-image: url('images/fondo_inicio.jpg');
+    background-size: cover; background-position: center center; background-repeat: no-repeat;
+    height: 100vh; margin: 0; display: flex; justify-content: center; align-items: center;
+    text-align: center; color: #fff; overflow: hidden;
 }
-
-/* Contenedor del contenido en la página de inicio */
 .landing-content {
-    background-color: rgba(0, 0, 0, 0.65);
-    padding: 40px 60px;
-    border-radius: 15px;
-    max-width: 700px;
-    width: 90%;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.65); padding: 40px 60px; border-radius: 15px;
+    max-width: 700px; width: 90%; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
 }
-
 .landing-content h1 {
-    font-family: 'Raleway', 'Arial', sans-serif; /* Fuente Raleway para título principal */
-    font-weight: 700;
-    font-size: 3.5rem;
-    margin-bottom: 1.5rem;
-    color: #ffffff;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    font-family: 'Raleway', 'Arial', sans-serif; font-weight: 700; font-size: 3.5rem;
+    margin-bottom: 1.5rem; color: #ffffff; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
-
 .landing-content p {
-    /* Lato ya se hereda del body */
-    font-size: 1.3rem;
-    line-height: 1.7;
-    margin-bottom: 2.5rem;
-    color: #f0f0f0;
+    font-size: 1.3rem; line-height: 1.7; margin-bottom: 2.5rem; color: #f0f0f0;
 }
-
-/* Estilo del botón "Call to Action" en la Landing Page */
 .cta-button {
-    display: inline-block;
-    background-color: #fff;
-    color: #333;
-    padding: 15px 40px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-size: 1.1rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border: 2px solid #fff;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
+    display: inline-block; background-color: #fff; color: #333; padding: 15px 40px;
+    border-radius: 50px; text-decoration: none; font-size: 1.1rem; font-weight: bold;
+    text-transform: uppercase; letter-spacing: 1px; border: 2px solid #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); transition: all 0.3s ease;
 }
-
-.cta-button:hover,
-.cta-button:focus {
-    background-color: transparent;
-    color: #fff;
-    border-color: #fff;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    outline: none;
+.cta-button:hover, .cta-button:focus {
+    background-color: transparent; color: #fff; border-color: #fff;
+    transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); outline: none;
 }
-
 /* --- AJUSTES RESPONSIVOS PARA LA PÁGINA DE INICIO --- */
 @media (max-width: 768px) {
     .landing-content { padding: 30px 35px; }
@@ -281,9 +271,8 @@ body.landing-page {
     .landing-content p { font-size: 1.1rem; }
     .cta-button { padding: 12px 30px; font-size: 1rem; }
 }
-
 @media (max-width: 480px) {
-     body.landing-page { background-position: center 30%; } /* Ajusta foco si es necesario */
+     body.landing-page { background-position: center 30%; }
      .landing-content { padding: 25px 20px; width: 95%; }
     .landing-content h1 { font-size: 2.2rem; }
     .landing-content p { font-size: 1rem; margin-bottom: 2rem; }
@@ -293,129 +282,30 @@ body.landing-page {
 
 /* --- Estilos para el Botón Play/Pause Global --- */
 #audio-toggle-button {
-    position: fixed; /* Fijo en la pantalla */
-    top: 25px;       /* Distancia desde arriba */
-    right: 25px;      /* Distancia desde la derecha */
-    z-index: 1000;    /* Asegura que esté por encima de otros elementos */
-    padding: 0;       /* Quitamos padding para controlar tamaño exacto */
-    background-color: rgba(255, 255, 255, 0.7); /* Fondo blanco semi-transparente */
-    color: #2c3e50;   /* Color del icono oscuro */
-    border: none;
-    border-radius: 50%; /* Botón redondo */
-    width: 50px;      /* Ancho fijo */
-    height: 50px;     /* Alto fijo */
-    cursor: pointer;
-    font-size: 1.5rem; /* Tamaño del icono */
-    line-height: 50px; /* Centra verticalmente el icono (igual a height) */
-    text-align: center; /* Centra horizontalmente el icono */
+    position: fixed; top: 25px; right: 25px; z-index: 1000; padding: 0;
+    background-color: rgba(255, 255, 255, 0.7); color: #2c3e50; border: none;
+    border-radius: 50%; width: 50px; height: 50px; cursor: pointer;
+    font-size: 1.5rem; line-height: 50px; text-align: center;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    display: none; /* Inicialmente oculto hasta que haya un audio activo */
+    display: none; /* Oculto hasta que JS lo muestre */
 }
-
 #audio-toggle-button:hover {
-    background-color: rgba(255, 255, 255, 0.95); /* Más opaco al pasar el ratón */
-    transform: scale(1.1); /* Efecto ligero de zoom */
+    background-color: rgba(255, 255, 255, 0.95); transform: scale(1.1);
      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.4);
 }
-
- #audio-toggle-button:focus {
-     outline: 2px solid #3498db; /* Outline visible para accesibilidad */
-     outline-offset: 2px;
+#audio-toggle-button:focus {
+     outline: 2px solid #3498db; outline-offset: 2px;
  }
-
- /* Opcional: Ocultar etiqueta <audio> visualmente */
-audio {
-   /* Si necesitas ocultarla estrictamente: */
-   /* position: absolute; */
-   /* left: -9999px; */
-   /* width: 1px; */
-   /* height: 1px; */
-   /* overflow: hidden; */
-   /* opacity: 0; */
-}
-
-
-
-/* --- MEJORAS ESPECÍFICAS PARA ESCRITORIO GRANDE --- */
-@media (min-width: 1024px) { /* Ajusta este valor si prefieres (e.g., 1200px) */
-
-    html {
-        font-size: 17px; /* Aumentamos ligeramente la base para escalar REMs */
-    }
-
-    .content {
-        max-width: 950px;   /* <<< Ancho máximo fijo para mejor lectura >>> */
-        padding: 50px 70px; /* <<< Padding más generoso >>> */
-        border-radius: 15px; /* Bordes un poco más suaves */
-        background-color: rgba(0, 0, 0, 0.7); /* <<< Fondo un poco más opaco para contraste seguro >>> */
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45); /* Sombra ligeramente más definida */
-
-        /* Opcional: Sutil efecto al pasar el ratón sobre el cuadro de contenido */
-        transition: opacity 1s ease-out 0.5s,
-                    transform 1s ease-out 0.5s,
-                    box-shadow 0.4s ease,
-                    background-color 0.4s ease; /* Añadir transición para hover */
-    }
-
-    /* Opcional: Estilo Hover para el contenido */
-    /* Descomentar si quieres este efecto
-    .story-section:not(#pagina-1) .content:hover {
-        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55);
-        transform: translateY(0) scale(1.01); // Mantenemos Y(0) de is-visible y escalamos un poco
-        background-color: rgba(0, 0, 0, 0.75);
-    }
-    */
-
-    /* Tipografía para escritorio */
-    .content h1 {
-        font-size: 3.5rem; /* Título principal un poco más grande */
-        margin-bottom: 1.5rem;
-    }
-
-    .content h2 {
-        font-size: 3rem; /* Títulos secundarios un poco más grandes */
-        margin-bottom: 1.3rem;
-    }
-
-    .content p {
-        font-size: 1.4rem; /* Párrafos más grandes */
-        line-height: 1.8;  /* Mayor interlineado */
-        margin-bottom: 1.2rem; /* Más espacio entre párrafos */
-    }
-
-     /* Ajustes texto evocador en desktop */
-    .evocative-text h2 {
-        font-size: 2.0rem; /* Ajustado */
-        margin-bottom: 1rem;
-    }
-    .evocative-text p {
-        font-size: 1.2rem; /* Ajustado */
-    }
-
-
-    /* Botón Play/Pause ligeramente más grande y separado */
+/* Aplicar ajuste de tamaño del botón en escritorio */
+@media (min-width: 1024px) {
     #audio-toggle-button {
-        width: 55px;
-        height: 55px;
-        line-height: 55px;
-        font-size: 1.7rem;
-        top: 30px;
-        right: 30px;
+        width: 55px; height: 55px; line-height: 55px;
+        font-size: 1.7rem; top: 30px; right: 30px;
     }
-
-    /* Opcional: Efecto Parallax para fondos (con precaución) */
-    /* Añade sensación de profundidad en scroll. Puede afectar rendimiento. */
-    /* Descomentar para probar:
-    .story-section::before {
-        background-attachment: fixed;
-        // Nota: background-attachment: fixed puede tener comportamientos
-        // inesperados en algunas combinaciones de navegador/SO o con
-        // transformaciones complejas. Probar bien.
-        // También puede afectar la optimización si el navegador
-        // tiene que repintar áreas grandes constantemente.
-    }
-    */
 }
 
-/* --- Fin de Mejoras para Escritorio --- */
+/* --- Opcional: Ocultar etiqueta <audio> visualmente --- */
+audio {
+   /* width: 1px; height: 1px; position: absolute; left: -9999px; opacity: 0; */
+}
