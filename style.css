@@ -1,0 +1,318 @@
+/* --- Reset Básico y Configuración General --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    color: #fff;
+    overflow-x: hidden;
+    background-color: #111; /* Fondo oscuro base */
+}
+
+/* --- Estilo de las Secciones (Páginas) --- */
+.story-section {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative; /* Necesario para ::before y .content */
+    overflow: hidden;
+    background-color: #000; /* Color mientras carga/transiciona la imagen */
+}
+
+/* --- Pseudo-elemento para la Imagen de Fondo con Fade --- */
+.story-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0; /* Detrás del contenido, pero visible */
+
+    /* Configuración de fondo */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    /* Estado inicial: transparente */
+    opacity: 0;
+    /* Transición SÓLO para la opacidad */
+    transition: opacity 1.5s ease-in-out;
+    /* background-color: rgba(0, 0, 0, 0.3); */ /* Opcional: Tinte oscuro sobre la imagen */
+}
+
+/* --- Imágenes de Fondo Específicas por Sección (aplicadas al ::before) --- */
+/* ¡IMPORTANTE! Reemplaza 'images/...' con las rutas a TUS imágenes */
+/* --- Imágenes de Fondo Específicas por Sección (aplicadas al ::before) --- */
+#pagina-1::before { background-image: url('images/fondo1.jpg'); }
+#pagina-2::before { background-image: url('images/fondo2.jpg'); }
+#pagina-3::before { background-image: url('images/fondo3.jpg'); }
+#pagina-4::before { background-image: url('images/fondo4.jpg'); }
+#pagina-5::before { background-image: url('images/fondo5.jpg'); }
+#pagina-6::before { background-image: url('images/fondo6.jpg'); }
+#pagina-7::before { background-image: url('images/fondo7.jpg'); }
+#pagina-8::before { background-image: url('images/fondo8.jpg'); }
+#pagina-9::before { background-image: url('images/fondo9.jpg'); }
+#pagina-10::before { background-image: url('images/fondo10.jpg'); }
+#pagina-11::before { background-image: url('images/fondo11.jpg'); }
+#pagina-12::before { background-image: url('images/fondo12.jpg'); }
+#pagina-13::before { background-image: url('images/fondo13.jpg'); }
+#pagina-14::before { background-image: url('images/fondo14.jpg'); }
+#pagina-15::before { background-image: url('images/fondo15.jpg'); }
+#pagina-16::before { background-image: url('images/fondo16.jpg'); }
+#pagina-17::before { background-image: url('images/fondo17.jpg'); }
+#pagina-18::before { background-image: url('images/fondo18.jpg'); }
+#pagina-19::before { background-image: url('images/fondo19.jpg'); }
+
+
+
+/* --- Contenedor del Texto --- */
+.content {
+    position: relative; /* Para asegurar que está sobre ::before */
+    z-index: 1;        /* Debe tener un z-index mayor que ::before */
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 30px 40px;
+    border-radius: 10px;
+    max-width: 80%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+
+    /* Estado inicial: oculto (excepto animación especial de la primera pág) */
+    opacity: 0;
+    transform: translateY(30px);
+    /* Transición con retraso para esperar al fondo */
+    transition: opacity 1s ease-out 0.5s, transform 1s ease-out 0.5s;
+}
+
+/* --- Estilos de Texto (sin cambios) --- */
+.content h1 { font-size: 3rem; margin-bottom: 1rem; font-weight: bold; }
+.content h2 { font-size: 2.5rem; margin-bottom: 0.8rem; }
+.content p { font-size: 1.2rem; line-height: 1.6; }
+
+
+/* --- Animación Keyframes para la Primera Sección (Texto) --- */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Manejo Especial Primera Sección --- */
+/* El contenido de la primera sección no usará la transición general de entrada,
+   sino la animación @keyframes. Lo hacemos visible de inmediato. */
+#pagina-1 .content {
+    opacity: 1; /* Visible para que la animación interna funcione */
+    transform: translateY(0);
+    transition: none; /* Anulamos la transición general de .content */
+}
+
+/* Aplicamos la animación @keyframes a los textos DENTRO del .content de la pag 1 */
+#pagina-1 .animated-text {
+    opacity: 0; /* La animación empieza desde opacidad 0 */
+    animation: fadeInUp 1.5s ease-out forwards;
+    animation-delay: 0.5s; /* Retraso inicial */
+}
+#pagina-1 .animated-text.delay-animation {
+    animation-delay: 1s; /* Retraso mayor para el segundo texto */
+}
+
+/* El fondo de la primera sección SÍ usará el sistema de .is-visible */
+/* Se volverá opaco cuando el JS añada la clase .is-visible */
+
+
+/* --- Estilo cuando la sección está visible (añadido por JS) --- */
+
+/* Hacer aparecer el FONDO (fade in) */
+.story-section.is-visible::before {
+    opacity: 1;
+}
+
+/* Hacer aparecer el CONTENIDO (excepto el de la primera página que ya es visible) */
+/* Usamos :not() para evitar aplicar esto al #pagina-1 .content que ya manejamos */
+.story-section:not(#pagina-1).is-visible .content {
+    opacity: 1;
+    transform: translateY(0);
+}
+/* Si quieres que el contenido de la primera página también tenga un fade-in
+   general ADEMÁS de la animación de texto, podrías quitar el :not(#pagina-1)
+   y ajustar las reglas de #pagina-1 .content, pero puede ser complejo.
+   Esta versión mantiene la animación de texto inicial separada del fade general. */
+
+
+/* --- Responsividad (sin cambios) --- */
+@media (max-width: 768px) {
+    html { font-size: 14px; }
+    .content { padding: 20px 25px; max-width: 90%; }
+    .content h1 { font-size: 2.2rem; }
+    .content h2 { font-size: 2rem; }
+    .content p { font-size: 1.1rem; }
+}
+@media (max-width: 480px) {
+    html { font-size: 12px; }
+     .content h1 { font-size: 1.8rem; }
+     .content h2 { font-size: 1.6rem; }
+     .content p { font-size: 1rem; }
+     .content { padding: 15px 20px; }
+}
+
+/* --- ESTILOS PARA LA PÁGINA DE INICIO (inicio.html) --- */
+
+body.landing-page {
+    /* Imagen de fondo para la página de inicio */
+    background-image: url('images/fondo_inicio.jpg'); /* ¡NUEVA IMAGEN! */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 100vh; /* Ocupa toda la altura */
+    margin: 0; /* Sobrescribe cualquier margen por defecto */
+    display: flex; /* Usamos Flexbox para centrar el contenido */
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff; /* Color de texto principal (blanco) */
+    font-family: 'Arial', sans-serif; /* Asegura la fuente */
+    overflow: hidden; /* Evita barras de scroll */
+}
+
+/* Contenedor del contenido en la página de inicio */
+.landing-content {
+    background-color: rgba(0, 0, 0, 0.65); /* Fondo oscuro semitransparente */
+    padding: 40px 60px;
+    border-radius: 15px;
+    max-width: 700px; /* Ancho máximo del contenedor */
+    width: 90%; /* Ancho relativo en pantallas más pequeñas */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+.landing-content h1 {
+    font-size: 3.5rem; /* Tamaño grande para el título */
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+    color: #ffffff; /* Blanco brillante */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Sombra ligera */
+}
+
+.landing-content p {
+    font-size: 1.3rem; /* Tamaño legible para la intro */
+    line-height: 1.7;
+    margin-bottom: 2.5rem; /* Espacio antes del botón */
+    color: #f0f0f0; /* Blanco ligeramente menos brillante */
+}
+
+/* Estilo del botón "Call to Action" */
+.cta-button {
+    display: inline-block; /* Permite padding, márgenes, etc. */
+    background-color: #fff; /* Fondo blanco */
+    color: #333; /* Texto oscuro para contraste */
+    padding: 15px 40px; /* Espaciado interno */
+    border-radius: 50px; /* Bordes redondeados (forma de píldora) */
+    text-decoration: none; /* Quita el subrayado del enlace */
+    font-size: 1.1rem; /* Tamaño del texto del botón */
+    font-weight: bold;
+    text-transform: uppercase; /* Texto en mayúsculas */
+    letter-spacing: 1px; /* Espaciado ligero entre letras */
+    border: 2px solid #fff; /* Borde blanco (opcional) */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+    transition: all 0.3s ease; /* Transición suave para hover */
+}
+
+.cta-button:hover,
+.cta-button:focus {
+    background-color: transparent; /* Fondo transparente al pasar el ratón */
+    color: #fff; /* Texto blanco */
+    border-color: #fff; /* Mantiene o ajusta el borde */
+    transform: translateY(-3px); /* Efecto ligero de elevación */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada */
+    outline: none; /* Quita el outline por defecto en focus */
+}
+
+
+/* --- AJUSTES RESPONSIVOS PARA LA PÁGINA DE INICIO --- */
+
+@media (max-width: 768px) {
+    .landing-content h1 {
+        font-size: 2.8rem;
+    }
+    .landing-content p {
+        font-size: 1.1rem;
+    }
+    .cta-button {
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+    .landing-content {
+        padding: 30px 35px;
+    }
+}
+
+@media (max-width: 480px) {
+     body.landing-page {
+         background-position: center 30%; /* Ajusta foco de la imagen si es necesario */
+     }
+    .landing-content h1 {
+        font-size: 2.2rem;
+    }
+    .landing-content p {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+    .cta-button {
+        padding: 10px 25px;
+        font-size: 0.9rem;
+    }
+     .landing-content {
+        padding: 25px 20px;
+        width: 95%;
+    }
+}
+/* --- Estilos para el Botón Play/Pause Global --- */
+#audio-toggle-button {
+    position: fixed; /* Fijo en la pantalla */
+    top: 25px;       /* Distancia desde arriba */
+    right: 25px;      /* Distancia desde la derecha */
+    z-index: 1000;    /* Asegura que esté por encima de otros elementos */
+    padding: 0;       /* Quitamos padding para controlar tamaño exacto */
+    background-color: rgba(255, 255, 255, 0.7); /* Fondo blanco semi-transparente */
+    color: #2c3e50;   /* Color del icono oscuro */
+    border: none;
+    border-radius: 50%; /* Botón redondo */
+    width: 50px;      /* Ancho fijo */
+    height: 50px;     /* Alto fijo */
+    cursor: pointer;
+    font-size: 1.5rem; /* Tamaño del icono (ajusta según necesites) */
+    line-height: 50px; /* Centra verticalmente el icono (igual a height) */
+    text-align: center; /* Centra horizontalmente el icono */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    display: none; /* Inicialmente oculto hasta que haya un audio activo */
+}
+
+#audio-toggle-button:hover {
+    background-color: rgba(255, 255, 255, 0.95); /* Más opaco al pasar el ratón */
+    transform: scale(1.1); /* Efecto ligero de zoom */
+     box-shadow: 0 5px 12px rgba(0, 0, 0, 0.4);
+}
+
+ #audio-toggle-button:focus {
+     outline: 2px solid #3498db; /* Outline visible para accesibilidad */
+     outline-offset: 2px;
+ }
+
+ /* Opcional: Ocultar audio tag si no se quiere ver accidentalmente */
+audio {
+   /* position: absolute; left: -9999px; */
+}
+ /* Estilo opcional para texto evocador */
+.evocative-text h2,
+.evocative-text p {
+    opacity: 0.9;
+}
